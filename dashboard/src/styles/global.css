@@ -1,0 +1,208 @@
+/* ============================================================
+   Bittensor Premium Dashboard — Global Styles
+   Bloomberg/TradingView Dark Theme
+   ============================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0a0e17;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1a2035;
+  --bg-hover: #1e2a45;
+  --bg-active: #243352;
+  --bg-card: #141c2e;
+  --border: #1e2d4a;
+  --border-light: #2a3a5c;
+  --text: #e1e7ef;
+  --text-secondary: #8899b4;
+  --text-muted: #5a6a86;
+  --accent: #2962ff;
+  --accent-hover: #1e53e4;
+  --green: #00c853;
+  --red: #ff1744;
+  --yellow: #ffd600;
+  --orange: #ff6d00;
+  --purple: #ab47bc;
+  --chart-bg: #0d1321;
+  --chart-grid: #1a2540;
+  --scrollbar: #2a3a5c;
+  --scrollbar-hover: #3a4a6c;
+  --shadow: rgba(0,0,0,0.5);
+  --sidebar-width: 320px;
+  --topbar-height: 48px;
+  --transition: 200ms ease;
+  --radius: 6px;
+  --radius-lg: 10px;
+}
+
+[data-theme="light"] {
+  --bg: #f5f5f5;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e8eaed;
+  --bg-hover: #e0e4ea;
+  --bg-active: #d0d5dd;
+  --bg-card: #ffffff;
+  --border: #d0d5dd;
+  --border-light: #e0e4ea;
+  --text: #1a1a2e;
+  --text-secondary: #5a6478;
+  --text-muted: #8a94a6;
+  --chart-bg: #fafafa;
+  --chart-grid: #e8eaed;
+  --scrollbar: #c0c6d0;
+  --scrollbar-hover: #a0a8b4;
+  --shadow: rgba(0,0,0,0.12);
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+}
+
+/* Utility classes */
+.mono {
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Mono', monospace;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.green { color: var(--green); }
+.red { color: var(--red); }
+
+/* Transitions */
+.fade-enter { opacity: 0; transform: translateY(4px); }
+.fade-enter-active { opacity: 1; transform: translateY(0); transition: all var(--transition); }
+
+/* Skeleton loader */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--bg-hover) 50%, var(--bg-tertiary) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius);
+}
+
+/* Button base */
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--text);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Input base */
+input, select {
+  font-family: inherit;
+  font-size: inherit;
+  background: var(--bg-tertiary);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px 10px;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+input:focus, select:focus {
+  border-color: var(--accent);
+}
+
+input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Tooltip */
+[data-tooltip] {
+  position: relative;
+}
+[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px 8px;
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-new {
+  background: var(--accent);
+  color: #fff;
+}
+
+.badge-active {
+  background: rgba(0, 200, 83, 0.15);
+  color: var(--green);
+}
+
+.badge-inactive {
+  background: rgba(255, 23, 68, 0.15);
+  color: var(--red);
+}
