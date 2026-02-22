@@ -1,10 +1,10 @@
 import { SubnetDataSource } from '../../types';
 import { localDataSource } from './LocalJsonDataSource';
+import { taoStatsDataSource } from './TaoStatsDataSource';
 
-// Switch data source here when connecting to a real API
-// import { taoStatsDataSource } from './TaoStatsDataSource';
-
-let currentSource: SubnetDataSource = localDataSource;
+// Use TaoStats live data if an API key is configured, otherwise fall back to dummy data
+const apiKey = import.meta.env.VITE_TAOSTATS_API_KEY;
+let currentSource: SubnetDataSource = apiKey ? taoStatsDataSource : localDataSource;
 
 export function getDataSource(): SubnetDataSource {
   return currentSource;

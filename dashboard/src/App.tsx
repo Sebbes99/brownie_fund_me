@@ -8,6 +8,7 @@ import { MainPanel } from './components/layout/MainPanel';
 import { WatchlistManager } from './components/pro/WatchlistManager';
 import { AlertsPanel } from './components/pro/AlertsPanel';
 import { SimulationProvider } from './components/simulation/SimulationProvider';
+import { RateLimitNotice } from './components/common/RateLimitNotice';
 import './styles/global.css';
 
 const App: React.FC = () => {
@@ -29,14 +30,14 @@ const App: React.FC = () => {
       }
     });
 
-    // Simulate periodic registry refresh (new subnets detection)
+    // Periodic registry refresh — use 5 min interval to respect rate limits
     const interval = setInterval(async () => {
       const latestSubnets = await ds.listSubnets();
       const currentSubnets = useAppStore.getState().subnets;
       if (latestSubnets.length !== currentSubnets.length) {
         setSubnets(latestSubnets);
       }
-    }, 30000);
+    }, 300_000);
 
     return () => clearInterval(interval);
   }, []);
@@ -72,6 +73,7 @@ const App: React.FC = () => {
           {/* Main content */}
           <MainPanel />
         </div>
+        <RateLimitNotice />
       </div>
     </SimulationProvider>
   );
