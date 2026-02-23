@@ -72,11 +72,12 @@ async function loadSubnetInfoFromGithub(): Promise<typeof subnetInfoMap> {
 // --------------- API helpers ---------------
 
 async function apiGet<T>(path: string, params?: Record<string, string>): Promise<T> {
-  const url = new URL(`${BASE}${path}`);
+  let urlStr = `${BASE}${path}`;
   if (params) {
-    for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
+    const qs = new URLSearchParams(params).toString();
+    urlStr += `?${qs}`;
   }
-  const resp = await rateLimitedFetch(url.toString(), { headers: headers() });
+  const resp = await rateLimitedFetch(urlStr, { headers: headers() });
   if (!resp.ok) {
     throw new Error(`TaoStats API ${resp.status}: ${resp.statusText} — ${path}`);
   }

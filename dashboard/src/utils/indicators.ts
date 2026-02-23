@@ -146,7 +146,10 @@ export function formatPercent(n: number): string {
 }
 
 export function formatPrice(n: number): string {
-  if (n >= 1000) return n.toFixed(2);
-  if (n >= 1) return n.toFixed(4);
-  return n.toFixed(6);
+  return `${n.toFixed(4)} τ`;
+}
+
+/** Format price without the τ symbol (for chart axes) */
+export function formatPriceRaw(n: number): string {
+  return n.toFixed(4);
 }

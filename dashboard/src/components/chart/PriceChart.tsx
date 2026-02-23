@@ -15,7 +15,7 @@ import type {
 } from 'lightweight-charts';
 import { useAppStore } from '../../stores/appStore';
 import type { TimeSeriesPoint, Drawing } from '../../types';
-import { calcSMA, calcEMA, formatPrice, formatPercent } from '../../utils/indicators';
+import { calcSMA, calcEMA, formatPrice, formatPriceRaw, formatPercent } from '../../utils/indicators';
 import { getDrawingsForChart, saveDrawing } from '../../services/drawingPersistence';
 import { v4 as uuid } from 'uuid';
 import { ChartSkeleton } from '../common/Skeleton';
@@ -90,6 +90,9 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, subnetId, loading,
       },
       rightPriceScale: {
         borderColor: darkMode ? '#1e2d4a' : '#d0d5dd',
+      },
+      localization: {
+        priceFormatter: (price: number) => `${price.toFixed(4)} τ`,
       },
       timeScale: {
         borderColor: darkMode ? '#1e2d4a' : '#d0d5dd',

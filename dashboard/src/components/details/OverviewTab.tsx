@@ -11,12 +11,12 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ subnet, metrics }) => 
   if (!metrics) return <div style={{ padding: 24, color: 'var(--text-muted)' }}>Loading metrics...</div>;
 
   const stats: { label: string; value: string; color?: string }[] = [
-    { label: 'Price', value: formatPrice(metrics.price) },
+    { label: 'Price (TAO)', value: formatPrice(metrics.price) },
     { label: '24h Change', value: formatPercent(metrics.priceChange24h), color: metrics.priceChange24h >= 0 ? 'var(--green)' : 'var(--red)' },
     { label: '7d Return', value: formatPercent(metrics.returns7d), color: metrics.returns7d >= 0 ? 'var(--green)' : 'var(--red)' },
     { label: '30d Return', value: formatPercent(metrics.returns30d), color: metrics.returns30d >= 0 ? 'var(--green)' : 'var(--red)' },
-    { label: 'Market Cap', value: formatNumber(metrics.marketCap) },
-    { label: 'Volume (24h)', value: formatNumber(metrics.volume24h) },
+    { label: 'Market Cap (TAO)', value: formatNumber(metrics.marketCap) },
+    { label: 'Volume 24h (TAO)', value: formatNumber(metrics.volume24h) },
     { label: 'Volatility', value: `${metrics.volatility.toFixed(1)}%` },
     { label: 'Max Drawdown', value: `-${metrics.drawdown.toFixed(1)}%`, color: 'var(--red)' },
     { label: 'Alpha', value: metrics.alpha.toFixed(2), color: metrics.alpha >= 0 ? 'var(--green)' : 'var(--red)' },
@@ -25,10 +25,10 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ subnet, metrics }) => 
 
   const networkStats = [
     { label: 'Emission', value: metrics.emission.toFixed(4) },
-    { label: 'Total Stake', value: formatNumber(metrics.totalStake) },
+    { label: 'Total Stake (TAO)', value: formatNumber(metrics.totalStake) },
     { label: 'Validators', value: metrics.validatorCount.toString() },
     { label: 'Miners', value: metrics.minerCount.toString() },
-    { label: 'Daily Reward', value: formatNumber(metrics.dailyReward) },
+    { label: 'Daily Reward (TAO)', value: formatNumber(metrics.dailyReward) },
     { label: 'Tempo', value: `${metrics.tempo}s` },
   ];
 

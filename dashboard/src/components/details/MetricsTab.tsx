@@ -18,8 +18,8 @@ export const MetricsTab: React.FC<MetricsTabProps> = ({ metrics }) => {
 
   const emissionMetrics: MetricRow[] = [
     { label: 'Emission Rate', value: metrics.emission.toFixed(4), bar: metrics.emission * 50 },
-    { label: 'Total Stake', value: formatNumber(metrics.totalStake), bar: Math.min(100, metrics.totalStake / 100000) },
-    { label: 'Daily Reward', value: formatNumber(metrics.dailyReward), bar: Math.min(100, metrics.dailyReward) },
+    { label: 'Total Stake (TAO)', value: formatNumber(metrics.totalStake), bar: Math.min(100, metrics.totalStake / 100000) },
+    { label: 'Daily Reward (TAO)', value: formatNumber(metrics.dailyReward), bar: Math.min(100, metrics.dailyReward) },
     { label: 'Rank', value: `#${metrics.rank}`, bar: Math.max(0, 100 - metrics.rank * 0.78) },
   ];
 
