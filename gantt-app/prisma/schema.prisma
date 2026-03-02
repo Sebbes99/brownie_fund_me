@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(uuid())
+  email          String          @unique
+  name           String
+  passwordHash   String
+  role           String          @default("user") // user | admin
+  profileConfig  String          @default("{}") // JSON: keywords, regions, categories
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  sessions       Session[]
+  updateLogs     UpdateLog[]
+  chatMessages   ChatMessage[]
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Tender {
+  id              String        @id @default(uuid())
+  externalId      String        @unique
+  title           String
+  description     String
+  category        String        // byggledning, projektledning, besiktning, etc.
+  region          String        // Stockholm, Göteborg, etc.
+  buyer           String        // beställare
+  value           Float?        // estimated value in SEK
+  currency        String        @default("SEK")
+  publishedAt     DateTime
+  deadlineAt      DateTime
+  source          String        // mercell, visma, ted_eu, etc.
+  sourceUrl       String?
+  status          String        @default("ny") // ny, uppdaterad, stänger_snart, stängd
+  matchScore      Int?          // 0-100
+  matchReason     String?       // AI-generated match explanation
+  aiSummary       String?       // AI-generated 3-sentence summary
+  rawData         String?       // JSON: full original data
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  updateEntries   UpdateEntry[]
+
+  @@index([category])
+  @@index([region])
+  @@index([status])
+  @@index([deadlineAt])
+  @@index([matchScore])
+  @@index([source])
+}
+
+model UpdateBatch {
+  id            String        @id @default(uuid())
+  fetchedAt     DateTime      @default(now())
+  newCount      Int           @default(0)
+  updatedCount  Int           @default(0)
+  closedCount   Int           @default(0)
+  status        String        @default("pending") // pending, applied, deferred
+  briefingText  String?       // AI daily briefing
+  appliedAt     DateTime?
+  entries       UpdateEntry[]
+  logs          UpdateLog[]
+}
+
+model UpdateEntry {
+  id          String      @id @default(uuid())
+  batchId     String
+  tenderId    String
+  changeType  String      // new, updated, closed
+  diff        String?     // JSON diff of what changed
+  batch       UpdateBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  tender      Tender      @relation(fields: [tenderId], references: [id], onDelete: Cascade)
+
+  @@index([batchId])
+  @@index([tenderId])
+}
+
+model UpdateLog {
+  id        String   @id @default(uuid())
+  batchId   String
+  userId    String
+  action    String   // applied, deferred, viewed_diff
+  timestamp DateTime @default(now())
+  batch     UpdateBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([batchId])
+  @@index([userId])
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  userId    String
+  role      String   // user | assistant
+  content   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model SearchKeyword {
+  id       String @id @default(uuid())
+  keyword  String @unique
+  category String @default("general") // general, bygg, teknik
+  active   Boolean @default(true)
+}
